@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModSyncNinjaData>
   <ID>195f1d94-143d-4a4c-88b4-4256a9a40878</ID>
-  <ModName>Remove Spacer Weapons (Continued)</ModName>
-  <Version>1.0.0.0</Version>
+  <ModName>Remove Spacer Stuff (Continued)</ModName>
+  <Version>1.0.1.0</Version>
   <SaveBreaking>False</SaveBreaking>
   <Host name="Github">
     <Owner>emipa606</Owner>
-    <Project>RemoveSpacerWeapons</Project>
+    <Project>RemoveSpacerStuff</Project>
     <AboutDir>About</AboutDir>
     <DownloadFrom>ModSyncMainPage</DownloadFrom>
     <Branch>master</Branch>
   </Host>
 </ModSyncNinjaData>
-
-
-
-

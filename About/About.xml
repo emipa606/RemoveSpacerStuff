@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Remove Spacer Weapons (Continued)</name>
-  <packageId>Mlie.RemoveSpacerWeapons</packageId>
+  <name>Remove Spacer Stuff (Continued)</name>
+  <packageId>Mlie.RemoveSpacerStuff</packageId>
   <author>Mlie</author>
-  <url>https://github.com/emipa606/RemoveSpacerWeapons</url>
+  <url>https://github.com/emipa606/RemoveSpacerStuff</url>
   <supportedVersions>
     <li>1.1</li>
     <li>1.2</li>
@@ -26,7 +26,7 @@ Support-chat:
 https://invite.gg/Mlie
 
 Non-steam version:
-https://github.com/emipa606/RemoveSpacerWeapons
+https://github.com/emipa606/RemoveSpacerStuff
 	
 - Rewrote the whole mod to C# instead
 - Added options to remove spacer items, research, factions and pawnkinds
