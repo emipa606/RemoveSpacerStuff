@@ -32,7 +32,9 @@ namespace RemoveSpacerStuff
         public static void ItemCollectionGeneratorGeneratePrefix(ref ThingSetMakerParams parms)
         {
             if (!parms.techLevel.HasValue || parms.techLevel > RemoveSpacerStuff.MAX_TECHLEVEL)
+            {
                 parms.techLevel = RemoveSpacerStuff.MAX_TECHLEVEL;
+            }
         }
 
     }

@@ -1,17 +1,16 @@
 ﻿using System.Text;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using HarmonyLib;
+using JetBrains.Annotations;
+using RimWorld;
+using Verse;
 
 namespace RemoveSpacerStuff
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using HarmonyLib;
-    using JetBrains.Annotations;
-    using RimWorld;
-    using Verse;
-
     [StaticConstructorOnStartup]
     public static class RemoveSpacerStuff
     {
@@ -53,7 +52,9 @@ namespace RemoveSpacerStuff
                 foreach (var tag in tags)
                 {
                     if (tag.StartsWith("CE_AutoEnableCrafting"))
+                    {
                         thing.tradeTags.Remove(tag);
+                    }
                 }
             }
 
@@ -92,21 +93,27 @@ namespace RemoveSpacerStuff
             FieldInfo getThingInfo =
                 typeof(ScenPart_ThingCount).GetField("thingDef", BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (ScenarioDef def in DefDatabase<ScenarioDef>.AllDefs)
+            {
                 foreach (ScenPart sp in def.scenario.AllParts)
+                {
                     if (sp is ScenPart_ThingCount && things.Contains((ThingDef)getThingInfo?.GetValue(sp)))
                     {
                         def.scenario.RemovePart(sp);
                         DebugString.AppendLine("- " + sp.Label + " " + ((ThingDef)getThingInfo?.GetValue(sp)).label +
                                                " from " + def.label);
                     }
+                }
+            }
 
             foreach (ThingCategoryDef thingCategoryDef in DefDatabase<ThingCategoryDef>.AllDefs)
+            {
                 thingCategoryDef.childThingDefs.RemoveAll(things.Contains);
+            }
 
             DebugString.AppendLine("Stock Generator Part Cleanup");
             foreach (TraderKindDef tkd in DefDatabase<TraderKindDef>.AllDefs)
             {
-                for (int i = tkd.stockGenerators.Count - 1; i >= 0; i--)
+                for (var i = tkd.stockGenerators.Count - 1; i >= 0; i--)
                 {
                     StockGenerator stockGenerator = tkd.stockGenerators[i];
 
@@ -130,9 +137,14 @@ namespace RemoveSpacerStuff
                             thingList.RemoveAll(things.Contains);
 
                             if (thingList.NullOrEmpty())
+                            {
                                 tkd.stockGenerators.Remove(stockGenerator);
+                            }
                             else
+                            {
                                 thingListTraverse.SetValue(thingList);
+                            }
+
                             break;
                     }
                 }
@@ -218,7 +230,9 @@ namespace RemoveSpacerStuff
             MethodInfo resolveDesignatorsAgain = typeof(DesignationCategoryDef).GetMethod("ResolveDesignators",
                 BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (DesignationCategoryDef dcd in DefDatabase<DesignationCategoryDef>.AllDefs)
+            {
                 resolveDesignatorsAgain?.Invoke(dcd, null);
+            }
 
             if (ModStuff.Settings.LimitPawns)
             {
@@ -237,7 +251,14 @@ namespace RemoveSpacerStuff
                 RemoveStuffFromDatabase(typeof(DefDatabase<FactionDef>),
                     DefDatabase<FactionDef>.AllDefs.Where(fd => !fd.isPlayer && fd.techLevel > MAX_TECHLEVEL).Cast<Def>());
             }
-            Log.Message("Removed " + removedDefs + " spacer defs");
+            if (ModStuff.Settings.LogRemovals)
+            {
+                Log.Message(DebugString.ToString());
+            }
+            else
+            {
+                Log.Message("Removed " + removedDefs + " spacer defs");
+            }
 
             PawnWeaponGenerator.Reset();
             PawnApparelGenerator.Reset();
@@ -250,7 +271,11 @@ namespace RemoveSpacerStuff
         private static void RemoveStuffFromDatabase(Type databaseType, [NotNull] IEnumerable<Def> defs)
         {
             IEnumerable<Def> enumerable = defs as Def[] ?? defs.ToArray();
-            if (!enumerable.Any()) return;
+            if (!enumerable.Any())
+            {
+                return;
+            }
+
             Traverse rm = Traverse.Create(databaseType).Method("Remove", enumerable.First());
             foreach (Def def in enumerable)
             {
