@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -10,13 +11,21 @@ namespace RemoveSpacerStuff
     {
         static RemoveModernStuffHarmony()
         {
-            var harmony = new Harmony(id: "Mlie.RemoveSpacerStuff");
-            harmony.Patch(original: AccessTools.Method(type: typeof(ThingSetMaker), name: "Generate", parameters: new[] { typeof(ThingSetMakerParams) }), prefix: new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(ItemCollectionGeneratorGeneratePrefix)), postfix: null);
+            var harmony = new Harmony("Mlie.RemoveSpacerStuff");
+            harmony.Patch(AccessTools.Method(typeof(ThingSetMaker), "Generate", new[] {typeof(ThingSetMakerParams)}),
+                new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(ItemCollectionGeneratorGeneratePrefix)));
             //Log.Message("AddToTradeables");
-            harmony.Patch(AccessTools.Method(typeof(TradeDeal), "AddToTradeables"), new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(PostCacheTradeables)), null);
+            harmony.Patch(AccessTools.Method(typeof(TradeDeal), "AddToTradeables"),
+                new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(PostCacheTradeables)));
             //Log.Message("CanGenerate");
-            harmony.Patch(AccessTools.Method(typeof(ThingSetMakerUtility), nameof(ThingSetMakerUtility.CanGenerate)), null, new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(ThingSetCleaner)));
-            
+            harmony.Patch(AccessTools.Method(typeof(ThingSetMakerUtility), nameof(ThingSetMakerUtility.CanGenerate)),
+                null, new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(ThingSetCleaner)));
+            harmony.Patch(AccessTools.Method(typeof(FactionManager), "FirstFactionOfDef", new[] {typeof(FactionDef)}),
+                new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(FactionManagerFirstFactionOfDefPrefix)));
+
+            harmony.Patch(AccessTools.Method(typeof(BackCompatibility), "FactionManagerPostLoadInit", new Type[] { }),
+                new HarmonyMethod(typeof(RemoveModernStuffHarmony),
+                    nameof(BackCompatibilityFactionManagerPostLoadInitPrefix)));
         }
 
         public static void ThingSetCleaner(ThingDef thingDef, ref bool __result)
@@ -37,5 +46,15 @@ namespace RemoveSpacerStuff
             }
         }
 
+        public static bool FactionManagerFirstFactionOfDefPrefix(ref FactionDef facDef)
+        {
+            return !ModStuff.Settings.LimitFactions || facDef == null ||
+                   facDef.techLevel <= RemoveSpacerStuff.MAX_TECHLEVEL;
+        }
+
+        public static bool BackCompatibilityFactionManagerPostLoadInitPrefix()
+        {
+            return !ModStuff.Settings.LimitFactions;
+        }
     }
 }

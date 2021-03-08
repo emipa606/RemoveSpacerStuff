@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using Verse;
 
 namespace RemoveSpacerStuff
 {
     public class ModStuff : Mod
     {
+        public static Settings Settings;
+
         public ModStuff(ModContentPack content) : base(content)
         {
             Settings = GetSettings<Settings>();
@@ -24,8 +21,5 @@ namespace RemoveSpacerStuff
         {
             Settings.DoWindowContents(canvas);
         }
-
-        public static Settings Settings;
-
     }
 }
