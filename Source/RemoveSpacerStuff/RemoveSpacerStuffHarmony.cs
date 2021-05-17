@@ -23,7 +23,8 @@ namespace RemoveSpacerStuff
             harmony.Patch(AccessTools.Method(typeof(FactionManager), "FirstFactionOfDef", new[] {typeof(FactionDef)}),
                 new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(FactionManagerFirstFactionOfDefPrefix)));
 
-            harmony.Patch(AccessTools.Method(typeof(BackCompatibility), "FactionManagerPostLoadInit", new Type[] { }),
+            harmony.Patch(
+                AccessTools.Method(typeof(BackCompatibility), "FactionManagerPostLoadInit", Array.Empty<Type>()),
                 new HarmonyMethod(typeof(RemoveModernStuffHarmony),
                     nameof(BackCompatibilityFactionManagerPostLoadInitPrefix)));
         }

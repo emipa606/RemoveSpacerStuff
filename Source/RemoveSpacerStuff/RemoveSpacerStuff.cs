@@ -32,16 +32,12 @@ namespace RemoveSpacerStuff
                 projects = DefDatabase<ResearchProjectDef>.AllDefs.Where(rpd => rpd.techLevel > MAX_TECHLEVEL);
             }
 
-            var extraDefsToRemove = new List<string>();
 
             if (ModStuff.Settings.LimitItems)
             {
                 things = new HashSet<ThingDef>(DefDatabase<ThingDef>.AllDefs.Where(td =>
                     td.techLevel > MAX_TECHLEVEL ||
-                    extraDefsToRemove.Contains(td.defName) ||
-                    (td.researchPrerequisites?.Any(rpd => projects.Contains(rpd)) ?? false) || new string[]
-                    {
-                    }.Contains(td.defName)));
+                    (td.researchPrerequisites?.Any(rpd => projects.Contains(rpd)) ?? false)));
             }
 
             DebugString.AppendLine("RecipeDef Removal List");
@@ -252,6 +248,15 @@ namespace RemoveSpacerStuff
                 DebugString.AppendLine("FactionDef Removal List");
                 RemoveStuffFromDatabase(typeof(DefDatabase<FactionDef>),
                     DefDatabase<FactionDef>.AllDefs.Where(fd => !fd.isPlayer && fd.techLevel > MAX_TECHLEVEL));
+                if (ModLister.RoyaltyInstalled)
+                {
+                    var incident = DefDatabase<IncidentDef>.GetNamedSilentFail("CaravanArrivalTributeCollector");
+                    if (incident != null)
+                    {
+                        RemoveStuffFromDatabase(typeof(DefDatabase<IncidentDef>),
+                            new List<Def> {incident});
+                    }
+                }
             }
 
             if (ModStuff.Settings.LogRemovals)
