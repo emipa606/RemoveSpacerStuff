@@ -31,9 +31,9 @@ https://github.com/emipa606/RemoveSpacerStuff
 ![Image](https://i.imgur.com/NOW7jU1.png)
 
 
-Do you ever wish Rimworld had more of a realistic setting? I use this with Combat Extended, More Traders, and a bunch of other mods and it seems to work fine. Grab this and a mod that disables Mechanoids and Infestations and you'll have a grand ol' time. Kind of. Just try to ignore all the log spam. 
+Do you ever wish Rimworld had more of a realistic setting? I use this with Combat Extended, More Traders, and a bunch of other mods and it seems to work fine. Grab this and a mod that disables Mechanoids and Infestations and you&apos;ll have a grand ol&apos; time. Kind of. Just try to ignore all the log spam. 
 
-Disables Marine armor, [strike]Shield Belts[/strike], Charge rifles, the Doomsday launcher and Triple rocket launcher. They won't spawn on raiders, traders, or potaters. Or anywhere else.
+Disables Marine armor, [strike]Shield Belts[/strike], Charge rifles, the Doomsday launcher and Triple rocket launcher. They won&apos;t spawn on raiders, traders, or potaters. Or anywhere else.
 
 
 Uses Harmony.
@@ -41,7 +41,7 @@ Uses Harmony.
 
 TO ANY EXPERIENCED MODDERS:
 
-I have very little, if any, idea how to C# and therefore this is based heavily on reverse engineering. If anyone knows how to make it stop log spamming, I'd appreciate it. I suspect that it has to do with other mods (Mainly Combat Extended) looking for the missing defs. I have no idea how to fix this.
+I have very little, if any, idea how to C# and therefore this is based heavily on reverse engineering. If anyone knows how to make it stop log spamming, I&apos;d appreciate it. I suspect that it has to do with other mods (Mainly Combat Extended) looking for the missing defs. I have no idea how to fix this.
 
 
 ![Image](https://i.imgur.com/Rs6T6cr.png)
