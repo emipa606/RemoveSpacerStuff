@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RSS.CurrentModVersion>Installed mod-version: {0}</RSS.CurrentModVersion>
+  <RSS.LimitItems>Limit items</RSS.LimitItems>
+  <RSS.LimitItems.Desc>Removes all items tagged with tech-level spacer</RSS.LimitItems.Desc>
+  <RSS.LimitResearch>Limit research</RSS.LimitResearch>
+  <RSS.LimitResearch.Desc>Removes all research-projects tagged with tech-level spacer</RSS.LimitResearch.Desc>
+  <RSS.LimitFactions>Limit factions</RSS.LimitFactions>
+  <RSS.LimitFactions.Desc>Removes all factions tagged with tech-level spacer</RSS.LimitFactions.Desc>
+  <RSS.LimitPawnKinds>Limit pawnkinds</RSS.LimitPawnKinds>
+  <RSS.LimitPawnKinds.Desc>Removes all pawnkinds tagged with tech-level spacer</RSS.LimitPawnKinds.Desc>
+  <RSS.LogRemovals>Log removed items</RSS.LogRemovals>
+  <RSS.LogRemovals.Desc>Logs all removed items at game-start</RSS.LogRemovals.Desc>
+  <RSS.RestartInfo>NOTE: Any changes require a restart to have effect</RSS.RestartInfo>
+</LanguageData>
