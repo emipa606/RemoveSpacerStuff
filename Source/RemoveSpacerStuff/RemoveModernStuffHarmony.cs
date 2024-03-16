@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -12,19 +11,17 @@ public static class RemoveModernStuffHarmony
     static RemoveModernStuffHarmony()
     {
         var harmony = new Harmony("Mlie.RemoveSpacerStuff");
-        harmony.Patch(AccessTools.Method(typeof(ThingSetMaker), "Generate", new[] { typeof(ThingSetMakerParams) }),
+        harmony.Patch(AccessTools.Method(typeof(ThingSetMaker), "Generate", [typeof(ThingSetMakerParams)]),
             new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(ItemCollectionGeneratorGeneratePrefix)));
-        //Log.Message("AddToTradeables");
         harmony.Patch(AccessTools.Method(typeof(TradeDeal), "AddToTradeables"),
             new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(PostCacheTradeables)));
-        //Log.Message("CanGenerate");
         harmony.Patch(AccessTools.Method(typeof(ThingSetMakerUtility), nameof(ThingSetMakerUtility.CanGenerate)),
             null, new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(ThingSetCleaner)));
-        harmony.Patch(AccessTools.Method(typeof(FactionManager), "FirstFactionOfDef", new[] { typeof(FactionDef) }),
+        harmony.Patch(AccessTools.Method(typeof(FactionManager), "FirstFactionOfDef", [typeof(FactionDef)]),
             new HarmonyMethod(typeof(RemoveModernStuffHarmony), nameof(FactionManagerFirstFactionOfDefPrefix)));
 
         harmony.Patch(
-            AccessTools.Method(typeof(BackCompatibility), "FactionManagerPostLoadInit", Array.Empty<Type>()),
+            AccessTools.Method(typeof(BackCompatibility), "FactionManagerPostLoadInit", []),
             new HarmonyMethod(typeof(RemoveModernStuffHarmony),
                 nameof(BackCompatibilityFactionManagerPostLoadInitPrefix)));
     }

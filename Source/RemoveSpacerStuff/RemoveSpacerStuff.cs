@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
-using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -54,34 +53,6 @@ public static class RemoveSpacerStuff
                 }
             }
         }
-
-        //var recipeDefsToRemove = DefDatabase<RecipeDef>.AllDefs.Where(rd =>
-        //    rd.products.Any(tcc => things.Contains(tcc.thingDef)) ||
-        //    rd.AllRecipeUsers.All(td => things.Contains(td)) ||
-        //    projects.Contains(rd.researchPrerequisite)).Cast<Def>().ToList();
-        //recipeDefsToRemove?.RemoveAll(x =>
-        //    x.defName == "ExtractMetalFromSlag" ||
-        //    x.defName == "SmeltWeapon" ||
-        //    x.defName == "DestroyWeapon" ||
-        //    x.defName == "OfferingOfPlants_Meagre" ||
-        //    x.defName == "OfferingOfPlants_Decent" ||
-        //    x.defName == "OfferingOfPlants_Sizable" ||
-        //    x.defName == "OfferingOfPlants_Worthy" ||
-        //    x.defName == "OfferingOfPlants_Impressive" ||
-        //    x.defName == "OfferingOfMeat_Meagre" ||
-        //    x.defName == "OfferingOfMeat_Decent" ||
-        //    x.defName == "OfferingOfMeat_Sizable" ||
-        //    x.defName == "OfferingOfMeat_Worthy" ||
-        //    x.defName == "OfferingOfMeat_Impressive" ||
-        //    x.defName == "OfferingOfMeals_Meagre" ||
-        //    x.defName == "OfferingOfMeals_Decent" ||
-        //    x.defName == "OfferingOfMeals_Sizable" ||
-        //    x.defName == "OfferingOfMeals_Worthy" ||
-        //    x.defName == "OfferingOfMeals_Impressive" ||
-        //    x.defName == "ROMV_ExtractBloodVial" ||
-        //    x.defName == "ROMV_ExtractBloodPack"
-        //    );
-        //RemoveStuffFromDatabase(typeof(DefDatabase<RecipeDef>), recipeDefsToRemove);
 
         DebugString.AppendLine("ResearchProjectDef Removal List");
         RemoveStuffFromDatabase(typeof(DefDatabase<ResearchProjectDef>), projects);
@@ -147,81 +118,11 @@ public static class RemoveSpacerStuff
             }
         }
 
-
-        //DebugString.AppendLine("IncidentDef Removal List");
-
-        //var removedDefNames = new List<string>
-        //{
-        //    "Disease_FibrousMechanites",
-        //    "Disease_SensoryMechanites",
-        //    "ResourcePodCrash",
-        //    "PsychicSoothe",
-        //    "RefugeePodCrash",
-        //    "RansomDemand",
-        //    "MeteoriteImpact",
-        //    "PsychicDrone",
-        //    "ShortCircuit",
-        //    "ShipChunkDrop",
-        //    "OrbitalTraderArrival",
-        //    "StrangerInBlackJoin",
-        //    "DefoliatorShipPartCrash",
-        //    "PsychicEmanatorShipPartCrash",
-        //    "MechCluster",
-        //    "AnimalInsanityMass"
-        //};
-
-        //IEnumerable<IncidentDef> incidents = from IncidentDef incident in DefDatabase<IncidentDef>.AllDefs
-        //                                     where removedDefNames.Contains(incident.defName)
-        //                                     select incident;
-
-
-        //foreach (IncidentDef incident in incidents)
-        //{
-        //    incident.targetTags?.Clear();
-        //    incident.baseChance = 0f;
-        //    incident.allowedBiomes?.Clear();
-        //    incident.earliestDay = int.MaxValue;
-        //}
-
-        //RemoveStuffFromDatabase(typeof(DefDatabase<IncidentDef>), incidents.Cast<Def>());
-
-        //DebugString.AppendLine("Replaced Ancient Asphalt Road / Ancient Asphalt Highway with Stone Road");
-        //RoadDef[] targetRoads = { RoadDefOf.AncientAsphaltRoad, RoadDefOf.AncientAsphaltHighway };
-        //RoadDef originalRoad = DefDatabase<RoadDef>.GetNamed("StoneRoad");
-
-        //List<string> fieldNames = AccessTools.GetFieldNames(typeof(RoadDef));
-        //fieldNames.Remove("defName");
-        //foreach (FieldInfo fi in fieldNames.Select(name => AccessTools.Field(typeof(RoadDef), name)))
-        //{
-        //    object fieldValue = fi.GetValue(originalRoad);
-        //    foreach (RoadDef targetRoad in targetRoads) fi.SetValue(targetRoad, fieldValue);
-        //}
-
-        //DebugString.AppendLine("Special Hediff Removal List");
-        //RemoveStuffFromDatabase(typeof(DefDatabase<HediffDef>), (hediffs = new[] { HediffDefOf.Gunshot }).Cast<Def>());
-
-        //DebugString.AppendLine("RaidStrategyDef Removal List");
-        //RemoveStuffFromDatabase(typeof(DefDatabase<RaidStrategyDef>),
-        //    DefDatabase<RaidStrategyDef>.AllDefs
-        //        .Where(rs => typeof(ScenPart_ThingCount).IsAssignableFrom(rs.workerClass)).Cast<Def>());
-
-        ////            ItemCollectionGeneratorUtility.allGeneratableItems.RemoveAll(match: things.Contains);
-        ////
-        ////            foreach (Type type in typeof(ItemCollectionGenerator_Standard).AllSubclassesNonAbstract())
-        ////                type.GetMethod(name: "Reset")?.Invoke(obj: null, parameters: null);
-
         DebugString.AppendLine("ThingDef Removal List");
         RemoveStuffFromDatabase(typeof(DefDatabase<ThingDef>), things.ToArray());
 
         DebugString.AppendLine("ThingSetMaker Reset");
         ThingSetMakerUtility.Reset();
-
-        //DebugString.AppendLine("TraitDef Removal List");
-        //RemoveStuffFromDatabase(typeof(DefDatabase<TraitDef>),
-        //    //                                                                   { nameof(TraitDefOf.Prosthophobe), "Prosthophile" } ?
-        //    DefDatabase<TraitDef>.AllDefs
-        //        .Where(td => new[] { nameof(TraitDefOf.BodyPurist), "Transhumanist" }.Contains(td.defName))
-        //        .Cast<Def>());
 
         DebugString.AppendLine("Designators Resolved Again");
         var resolveDesignatorsAgain = typeof(DesignationCategoryDef).GetMethod("ResolveDesignators",
@@ -257,14 +158,7 @@ public static class RemoveSpacerStuff
             }
         }
 
-        if (ModStuff.Settings.LogRemovals)
-        {
-            Log.Message(DebugString.ToString());
-        }
-        else
-        {
-            Log.Message($"Removed {removedDefs} spacer defs");
-        }
+        Log.Message(ModStuff.Settings.LogRemovals ? DebugString.ToString() : $"Removed {removedDefs} spacer defs");
 
         PawnWeaponGenerator.Reset();
         PawnApparelGenerator.Reset();
@@ -274,7 +168,7 @@ public static class RemoveSpacerStuff
     }
 
 
-    private static void RemoveStuffFromDatabase(Type databaseType, [NotNull] IEnumerable<Def> defs)
+    private static void RemoveStuffFromDatabase(Type databaseType, IEnumerable<Def> defs)
     {
         IEnumerable<Def> enumerable = defs as Def[] ?? defs.ToArray();
         if (!enumerable.Any())
