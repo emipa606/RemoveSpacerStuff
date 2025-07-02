@@ -13,36 +13,36 @@ namespace RemoveSpacerStuff;
 [StaticConstructorOnStartup]
 public static class RemoveSpacerStuff
 {
-    public const TechLevel MAX_TECHLEVEL = TechLevel.Industrial;
+    public const TechLevel MaxTechlevel = TechLevel.Industrial;
     private static int removedDefs;
-    private static readonly StringBuilder DebugString = new StringBuilder();
+    private static readonly StringBuilder debugString = new();
 
-    public static readonly IEnumerable<ThingDef> things = new List<ThingDef>();
+    public static readonly IEnumerable<ThingDef> Things = new List<ThingDef>();
 
     static RemoveSpacerStuff()
     {
-        DebugString.AppendLine("RemoveSpacerStuff - Start Removal Log");
-        DebugString.AppendLine($"Tech Max Level = {MAX_TECHLEVEL}");
+        debugString.AppendLine("RemoveSpacerStuff - Start Removal Log");
+        debugString.AppendLine($"Tech Max Level = {MaxTechlevel}");
 
         removedDefs = 0;
         IEnumerable<ResearchProjectDef> projects = new List<ResearchProjectDef>();
         if (ModStuff.Settings.LimitResearch)
         {
-            projects = DefDatabase<ResearchProjectDef>.AllDefs.Where(rpd => rpd.techLevel > MAX_TECHLEVEL);
+            projects = DefDatabase<ResearchProjectDef>.AllDefs.Where(rpd => rpd.techLevel > MaxTechlevel);
         }
 
 
         if (ModStuff.Settings.LimitItems)
         {
-            things = new HashSet<ThingDef>(DefDatabase<ThingDef>.AllDefs.Where(td =>
-                td.techLevel > MAX_TECHLEVEL ||
+            Things = new HashSet<ThingDef>(DefDatabase<ThingDef>.AllDefs.Where(td =>
+                td.techLevel > MaxTechlevel ||
                 (td.researchPrerequisites?.Any(rpd => projects.Contains(rpd)) ?? false)));
         }
 
-        DebugString.AppendLine("RecipeDef Removal List");
+        debugString.AppendLine("RecipeDef Removal List");
 
 
-        foreach (var thing in from thing in things where thing.tradeTags != null select thing)
+        foreach (var thing in from thing in Things where thing.tradeTags != null select thing)
         {
             var tags = thing.tradeTags.ToArray();
             foreach (var tag in tags)
@@ -54,33 +54,33 @@ public static class RemoveSpacerStuff
             }
         }
 
-        DebugString.AppendLine("ResearchProjectDef Removal List");
-        RemoveStuffFromDatabase(typeof(DefDatabase<ResearchProjectDef>), projects);
+        debugString.AppendLine("ResearchProjectDef Removal List");
+        removeStuffFromDatabase(typeof(DefDatabase<ResearchProjectDef>), projects);
 
-        DebugString.AppendLine("Scenario Part Removal List");
+        debugString.AppendLine("Scenario Part Removal List");
         var getThingInfo =
             typeof(ScenPart_ThingCount).GetField("thingDef", BindingFlags.NonPublic | BindingFlags.Instance);
         foreach (var def in DefDatabase<ScenarioDef>.AllDefs)
         {
             foreach (var sp in def.scenario.AllParts)
             {
-                if (!(sp is ScenPart_ThingCount) || !things.Contains((ThingDef)getThingInfo?.GetValue(sp)))
+                if (sp is not ScenPart_ThingCount || !Things.Contains((ThingDef)getThingInfo?.GetValue(sp)))
                 {
                     continue;
                 }
 
                 def.scenario.RemovePart(sp);
-                DebugString.AppendLine(
+                debugString.AppendLine(
                     $"- {sp.Label} {((ThingDef)getThingInfo?.GetValue(sp))?.label} from {def.label}");
             }
         }
 
         foreach (var thingCategoryDef in DefDatabase<ThingCategoryDef>.AllDefs)
         {
-            thingCategoryDef.childThingDefs.RemoveAll(things.Contains);
+            thingCategoryDef.childThingDefs.RemoveAll(Things.Contains);
         }
 
-        DebugString.AppendLine("Stock Generator Part Cleanup");
+        debugString.AppendLine("Stock Generator Part Cleanup");
         foreach (var tkd in DefDatabase<TraderKindDef>.AllDefs)
         {
             for (var i = tkd.stockGenerators.Count - 1; i >= 0; i--)
@@ -89,20 +89,20 @@ public static class RemoveSpacerStuff
 
                 switch (stockGenerator)
                 {
-                    case StockGenerator_SingleDef sd when things.Contains(Traverse.Create(sd).Field("thingDef")
+                    case StockGenerator_SingleDef sd when Things.Contains(Traverse.Create(sd).Field("thingDef")
                         .GetValue<ThingDef>()):
                         var def = Traverse.Create(sd).Field("thingDef")
                             .GetValue<ThingDef>();
                         tkd.stockGenerators.Remove(stockGenerator);
-                        DebugString.AppendLine($"- {def.label} from {tkd.label}'s StockGenerator_SingleDef");
+                        debugString.AppendLine($"- {def.label} from {tkd.label}'s StockGenerator_SingleDef");
                         break;
                     case StockGenerator_MultiDef md:
                         var thingListTraverse = Traverse.Create(md).Field("thingDefs");
                         var thingList = thingListTraverse.GetValue<List<ThingDef>>();
-                        var removeList = thingList.FindAll(things.Contains);
+                        var removeList = thingList.FindAll(Things.Contains);
                         removeList.ForEach(x =>
-                            DebugString.AppendLine($"- {x.label} from {tkd.label}'s StockGenerator_MultiDef"));
-                        thingList.RemoveAll(things.Contains);
+                            debugString.AppendLine($"- {x.label} from {tkd.label}'s StockGenerator_MultiDef"));
+                        thingList.RemoveAll(Things.Contains);
 
                         if (thingList.NullOrEmpty())
                         {
@@ -118,13 +118,13 @@ public static class RemoveSpacerStuff
             }
         }
 
-        DebugString.AppendLine("ThingDef Removal List");
-        RemoveStuffFromDatabase(typeof(DefDatabase<ThingDef>), things.ToArray());
+        debugString.AppendLine("ThingDef Removal List");
+        removeStuffFromDatabase(typeof(DefDatabase<ThingDef>), Things.ToArray());
 
-        DebugString.AppendLine("ThingSetMaker Reset");
+        debugString.AppendLine("ThingSetMaker Reset");
         ThingSetMakerUtility.Reset();
 
-        DebugString.AppendLine("Designators Resolved Again");
+        debugString.AppendLine("Designators Resolved Again");
         var resolveDesignatorsAgain = typeof(DesignationCategoryDef).GetMethod("ResolveDesignators",
             BindingFlags.NonPublic | BindingFlags.Instance);
         foreach (var dcd in DefDatabase<DesignationCategoryDef>.AllDefs)
@@ -134,41 +134,41 @@ public static class RemoveSpacerStuff
 
         if (ModStuff.Settings.LimitPawns)
         {
-            DebugString.AppendLine("PawnKindDef Removal List");
-            RemoveStuffFromDatabase(typeof(DefDatabase<PawnKindDef>),
+            debugString.AppendLine("PawnKindDef Removal List");
+            removeStuffFromDatabase(typeof(DefDatabase<PawnKindDef>),
                 DefDatabase<PawnKindDef>.AllDefs
                     .Where(pkd =>
-                        (!pkd.defaultFactionType?.isPlayer ?? false) &&
-                        (pkd.race.techLevel > MAX_TECHLEVEL || pkd.defaultFactionType?.techLevel > MAX_TECHLEVEL)));
+                        (!pkd.defaultFactionDef?.isPlayer ?? false) &&
+                        (pkd.race.techLevel > MaxTechlevel || pkd.defaultFactionDef?.techLevel > MaxTechlevel)));
         }
 
         if (ModStuff.Settings.LimitFactions)
         {
-            DebugString.AppendLine("FactionDef Removal List");
-            RemoveStuffFromDatabase(typeof(DefDatabase<FactionDef>),
-                DefDatabase<FactionDef>.AllDefs.Where(fd => !fd.isPlayer && fd.techLevel > MAX_TECHLEVEL));
+            debugString.AppendLine("FactionDef Removal List");
+            removeStuffFromDatabase(typeof(DefDatabase<FactionDef>),
+                DefDatabase<FactionDef>.AllDefs.Where(fd => !fd.isPlayer && fd.techLevel > MaxTechlevel));
             if (ModLister.RoyaltyInstalled)
             {
                 var incident = DefDatabase<IncidentDef>.GetNamedSilentFail("CaravanArrivalTributeCollector");
                 if (incident != null)
                 {
-                    RemoveStuffFromDatabase(typeof(DefDatabase<IncidentDef>),
+                    removeStuffFromDatabase(typeof(DefDatabase<IncidentDef>),
                         new List<Def> { incident });
                 }
             }
         }
 
-        Log.Message(ModStuff.Settings.LogRemovals ? DebugString.ToString() : $"Removed {removedDefs} spacer defs");
+        Log.Message(ModStuff.Settings.LogRemovals ? debugString.ToString() : $"Removed {removedDefs} spacer defs");
 
         PawnWeaponGenerator.Reset();
         PawnApparelGenerator.Reset();
 
-        Debug.Log(DebugString.ToString());
-        DebugString = new StringBuilder();
+        Debug.Log(debugString.ToString());
+        debugString = new StringBuilder();
     }
 
 
-    private static void RemoveStuffFromDatabase(Type databaseType, IEnumerable<Def> defs)
+    private static void removeStuffFromDatabase(Type databaseType, IEnumerable<Def> defs)
     {
         IEnumerable<Def> enumerable = defs as Def[] ?? defs.ToArray();
         if (!enumerable.Any())
@@ -180,7 +180,7 @@ public static class RemoveSpacerStuff
         foreach (var def in enumerable)
         {
             removedDefs++;
-            DebugString.AppendLine($"- {def.label}");
+            debugString.AppendLine($"- {def.label}");
             rm.GetValue(def);
         }
     }
