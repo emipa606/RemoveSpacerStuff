@@ -1,6 +1,6 @@
 # [Remove Spacer Stuff (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=2260590151)
 
-![Image](https://i.imgur.com/buuPQel.png)
+![Image](https://img.litet.net/logos/Info.png)
 
 Rewrite of DarthBoers mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=1753102445
@@ -10,9 +10,9 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=1753102445
 - Added options to remove spacer items, research, factions and pawnkinds
 - Based heavily on the mod Lord of the Rims - The Third Age
 	
-![Image](https://i.imgur.com/pufA0kM.png)
+![Image](https://img.litet.net/logos/Notice.png)
 	
-![Image](https://i.imgur.com/Z4GOv8H.png)
+![Image](https://img.litet.net/logos/OriginalDescription.png)
 
 Do you ever wish Rimworld had more of a realistic setting? I use this with Combat Extended, More Traders, and a bunch of other mods and it seems to work fine. Grab this and a mod that disables Mechanoids and Infestations and you'll have a grand ol' time. Kind of. Just try to ignore all the log spam. 
 
@@ -27,13 +27,13 @@ TO ANY EXPERIENCED MODDERS:
 I have very little, if any, idea how to C# and therefore this is based heavily on reverse engineering. If anyone knows how to make it stop log spamming, I'd appreciate it. I suspect that it has to do with other mods (Mainly Combat Extended) looking for the missing defs. I have no idea how to fix this.
 
 
-![Image](https://i.imgur.com/PwoNOj4.png)
+![Image](https://img.litet.net/logos/ReportingIssues.png)
 
 
 
 -  See if the the error persists if you just have this mod and its requirements active.
 -  If not, try adding your other mods until it happens again.
--  Post your error-log using [HugsLib](https://steamcommunity.com/workshop/filedetails/?id=818773962) or the standalone [Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) and command Ctrl+F12
+-  Always post your log using the [Log Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404)
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
@@ -41,4 +41,4 @@ I have very little, if any, idea how to C# and therefore this is based heavily o
 
  
 
-[![Image](https://img.shields.io/github/v/release/emipa606/RemoveSpacerStuff?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2260590151) | tags:  weapons,  armor
+[![Image](https://img.shields.io/github/v/release/emipa606/RemoveSpacerStuff?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2260590151) | tags: armor, weapons
