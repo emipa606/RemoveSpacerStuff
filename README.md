@@ -41,4 +41,4 @@ I have very little, if any, idea how to C# and therefore this is based heavily o
 
  
 
-[![Image](https://img.shields.io/github/v/release/emipa606/RemoveSpacerStuff?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2260590151) | tags: armor, weapons
+[![Image](https://img.shields.io/github/v/release/emipa606/RemoveSpacerStuff?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/2260590151) | armor, weapons
